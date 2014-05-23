@@ -42,23 +42,9 @@ Demo restify-mongodb-atstops
     ```
     npm run flushdb
     ```
-
-7. Edit server.js and insert the following lines after call to _selectAll_. This allows REST urls for deleting and importing data from the frontend.
-
-    ```
-    app.get('/initdb', db.initDB);  
-    app.get('/flushdb', db.flushDB);
-    ```
-
-8. Deploy changes to OpenShift and invoke _flushdb_ REST interface 
-
-    ```
-    git add --all  
-    git commit  
-    git push
     ```   
    
-9. Show park coordinates file and prepared stop coordinates then overwrite
+7. Show park coordinates file and prepared stop coordinates then overwrite
 
     ```
     nano parkcoord.json  
@@ -66,7 +52,7 @@ Demo restify-mongodb-atstops
     cp ~/hackakl/parkcoord.json parkcoord.json
     ```
    
-10. Modify index.html based on diff cheat sheet and then deploy to OpenShift
+8. Modify index.html based on diff cheat sheet and then deploy to OpenShift
 
     ```
     git add --all  
