@@ -14,6 +14,7 @@ app.get('/parks/within', db.selectBox);
 app.get('/parks', db.selectAll);
 app.get('/initdb', db.initDB);
 app.get('/flushdb', db.flushDB);
+app.get('/importdata', db.importData);
 app.get('/status', function (req, res, next)
 {
   res.send("{status: 'ok'}");

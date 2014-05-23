@@ -1,12 +1,25 @@
 var config      = require('config'),
-    mongojs     = require('mongojs');
+mongojs     = require('mongojs');
+var https = require('https');
+var fs = require('fs');
 
 var db_config   = config.db_config,
-    collection_name = config.collection_name;
+collection_name = config.collection_name;
 var db = mongojs(db_config + collection_name, [collection_name] );
+var fileName = __dirname + '/../akltransport.json';
+var url = 'https://api.at.govt.nz/v1/gtfs/stops?api_key=API_KEY';
 
 function init_db(){
-  var points = require(__dirname + '/../parkcoord.json');
+  var file = fs.createWriteStream(fileName);
+  var request = https.get(url, function(response) {
+    response.pipe(file).on('close', function(){
+     import_data();
+   });
+  });
+}
+
+function import_data() {
+  var points = require(fileName);
   db[collection_name].ensureIndex({'pos':"2d"}, function(err, doc){
     if(err){
       console.log(err);
@@ -20,13 +33,16 @@ function init_db(){
           console.log("data already exists - bypassing db initialization work...");
         }else{
           console.log("Importing map points...");
-          db[collection_name].insert(points);
+          for (var i = 0; i < points.response.length; i++){
+            console.log(points.response[i]);
+            db[collection_name].insert(points.response[i]);
+          }
         }
         return db.close();
       });
     }
   });
-} 
+}
 
 function flush_db(){
   console.log("Dropping the DB...");
@@ -42,9 +58,9 @@ function select_box(req, res, next){
   //clean these variables:
   var query = req.query;
   var lat1 = Number(query.lat1),
-      lon1 = Number(query.lon1),
-      lat2 = Number(query.lat2),
-      lon2 = Number(query.lon2);
+  lon1 = Number(query.lon1),
+  lat2 = Number(query.lat2),
+  lon2 = Number(query.lon2);
   var limit = (typeof(query.limit) !== "undefined") ? query.limit : 40;
   if(!(Number(query.lat1) 
     && Number(query.lon1) 
@@ -80,5 +96,6 @@ module.exports = exports = {
   selectAll: select_all,
   selectBox: select_box,
   flushDB:   flush_db,
-  initDB:    init_db
+  initDB:    init_db,
+  importData: import_data
 };
