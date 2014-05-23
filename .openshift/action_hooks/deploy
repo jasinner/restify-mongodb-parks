@@ -1,5 +1,5 @@
 #!/bin/bash
 pushd $OPENSHIFT_REPO_DIR
-npm run initdb
 npm run flushdb
+npm run initdb
 popd
