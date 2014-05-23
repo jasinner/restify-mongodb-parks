@@ -42,7 +42,6 @@ Demo restify-mongodb-atstops
     ```
     npm run flushdb
     ```
-    ```   
    
 7. Show park coordinates file and prepared stop coordinates then overwrite
 
