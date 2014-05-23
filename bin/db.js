@@ -7,7 +7,7 @@ var db_config   = config.db_config,
 collection_name = config.collection_name;
 var db = mongojs(db_config + collection_name, [collection_name] );
 var fileName = __dirname + '/../akltransport.json';
-var url = 'https://api.at.govt.nz/v1/gtfs/stops?api_key=API_KEY';
+var url = 'https://api.at.govt.nz/v1/gtfs/stops?api_key=0784648a-8a58-444b-a1ff-38ab9e8f8e8b';
 
 function init_db(){
   var file = fs.createWriteStream(fileName);
